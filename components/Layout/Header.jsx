@@ -9,9 +9,9 @@ const Header = () => {
   };
 
   return (
-    <div className="flex shadow-sm bg-gray-50 p-2 justify-between items-baseline shadow">
+    <div className="flex bg-gray-50 px-2 py-2 justify-between items-baseline border-b">
       <div className="flex space-x-3">
-        <p className="text-gray-400">Adress </p>
+        <p className="text-gray-400">Adress</p>
         <p>0xc14D1bdD7A28b12fa3e88FE2bE9e193Bdfdlk8bb940A6</p>
       </div>
       <div className="flex space-x-4 text-gray-400 mr-3">

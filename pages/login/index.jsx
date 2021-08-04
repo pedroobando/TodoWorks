@@ -48,13 +48,9 @@ const index = () => {
 
         setTimeout(() => {
           const { token } = data.authenticateUser;
-          localStorage.setItem('token', `${token}`);
+          localStorage.setItem('token', token);
           router.push('/');
         }, 1000);
-
-        // setTimeout(() => {
-
-        // }, 2000);
       } catch (error) {
         const { message } = error;
         console.log(message);
@@ -116,7 +112,7 @@ const index = () => {
               type="submit"
               className="transition duration-200 bg-blue-500 hover:bg-blue-600 hover:shadows-md focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
             >
-              <span className="inline-block mr-2">Login</span>
+              <span className="inline-block mr-2 uppercase">Login</span>
 
               <svg
                 xmlns="http://www.w3.org/2000/svg"

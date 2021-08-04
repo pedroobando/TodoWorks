@@ -4,12 +4,15 @@ import Sidebar from './Sidebar';
 
 const index = ({ children }) => {
   return (
-    <div className="flex w-screen h-screen">
+    // flex w-screen h-screen
+    <div className="sm:flex min-h-screen bg-gray-50">
       <Sidebar />
-      <div className="w-screen">
+      {/* <div className="w-screen"> */}
+      <main className="sm:w-2/3 md:w-4/5 sm:min-h-screen">
         <Header />
-        <div className="my-4 mx-2">{children}</div>
-      </div>
+        {/* flex flex-col justify-center sm:py-12 */}
+        <div className="p-2">{children}</div>
+      </main>
     </div>
   );
 };

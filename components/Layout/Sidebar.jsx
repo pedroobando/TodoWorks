@@ -15,8 +15,8 @@ const menuSetting = [
 
 const Sidebar = () => {
   return (
-    <aside className="bg-gray-50 md:w-3/12 w-6/12 h-screen shadow">
-      <div className="border-b py-3 mt-1 flex justify-around">
+    <aside className="bg-gray-50 sm:w-1/3 md:w-1/5 sm:min-h-screen border-r">
+      <div className="border-b pt-3 pb-2 flex justify-around items-baseline">
         <p className="text-xl font-bold">TodoWork</p>
         <p>|</p>
         <p className="text-gray-400 text-lg">wallet</p>

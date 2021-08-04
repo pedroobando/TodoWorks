@@ -47,7 +47,7 @@ const index = () => {
   return (
     <Layout>
       <h1 className="text-2xl text-gray-800 font-light">Usuarios</h1>
-      <Link href="/nuevocliente">
+      <Link href="/usuarios/nuevo">
         <a className="py-2 px-5 mt-3 inline-block text-blue-800 rounded text-sm border hover:bg-gray-200 mb-3 uppercase font-bold w-full lg:w-auto text-center">
           Nuevo Usuario
         </a>
