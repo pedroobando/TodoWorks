@@ -4,17 +4,8 @@ import { useRouter } from 'next/router';
 import { gql, useQuery } from '@apollo/client';
 import Layout from '../../components/Layout';
 import Spinner from '../../components/Spinner';
-
-const OBTENER_USUARIOS = gql`
-  query getUsers {
-    getUsers {
-      id
-      name
-      email
-      created
-    }
-  }
-`;
+import UsuarioItem from './UsuarioItem';
+import { OBTENER_USUARIOS } from '../../graphql/dslgql';
 
 const index = () => {
   const router = useRouter();
@@ -65,11 +56,7 @@ const index = () => {
           </thead>
           <tbody className="bg-white">
             {data.getUsers.map((user, idx) => (
-              <tr key={idx}>
-                <td className="border px-4 py-2">{user.name}</td>
-                <td className="border px-4 py-2">{user.email}</td>
-                <td className="border px-4 py-2">{user.created}</td>
-              </tr>
+              <UsuarioItem usuario={user} key={idx} />
             ))}
           </tbody>
         </table>

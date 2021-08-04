@@ -8,6 +8,28 @@ export const AUTENTICAR_USUARIO = gql`
   }
 `;
 
+export const OBTENER_USUARIO = gql`
+  query getUser {
+    getUser {
+      id
+      name
+      email
+    }
+  }
+`;
+
+export const OBTENER_USUARIOS = gql`
+  query getUsers {
+    getUsers {
+      id
+      name
+      email
+      owner
+      created
+    }
+  }
+`;
+
 export const NUEVO_USUARIO = gql`
   mutation newUser($input: UserInput!) {
     newUser(input: $input) {
@@ -15,6 +37,16 @@ export const NUEVO_USUARIO = gql`
       name
       email
       created
+    }
+  }
+`;
+
+export const ACTUALIZAR_USUARIO = gql`
+  mutation UpdateUserMutation($updateUserInput: UserUpdateInput!) {
+    updateUser(input: $updateUserInput) {
+      id
+      name
+      email
     }
   }
 `;
