@@ -1,9 +1,51 @@
-import React from 'react';
+import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
+import Swal from 'sweetalert2';
+import { ELIMINAR_USUARIO, OBTENER_USUARIOS } from '../../graphql/dslgql';
 
 const UsuarioItem = ({ usuario }) => {
   const { id, name, email, created, owner } = usuario;
   const router = useRouter();
+
+  const [removeUser, { loading: eliminarProductoLoading, error: eliminarProductoError }] =
+    useMutation(ELIMINAR_USUARIO, {
+      update(cache) {
+        const { getUsers } = cache.readQuery({
+          query: OBTENER_USUARIOS,
+        });
+        cache.writeQuery({
+          query: OBTENER_USUARIOS,
+          data: {
+            getUsers: getUsers.filter((userHere) => userHere.id !== id),
+          },
+        });
+      },
+    });
+
+  const handleDeleteUsuario = () => {
+    Swal.fire({
+      title: `Deseas eliminar - ${name}.?`,
+      text: 'Esta accion no podra revertirse..!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const { data } = await removeUser({});
+
+          Swal.fire(`${data.removeUser}`, `El producto ${name} fue eliminado`, 'success');
+        } catch (error) {
+          // console.log(error);
+          const { message } = error;
+          Swal.fire('Error', `${message}`, 'error');
+        }
+      }
+    });
+  };
 
   const handleUpdateUsuario = (id) => {
     router.push({
@@ -12,7 +54,6 @@ const UsuarioItem = ({ usuario }) => {
     });
   };
 
-  const handleDeleteUsuario = (id) => {};
   const isEditDelete = owner === 'true' ? true : false;
 
   return (
@@ -49,7 +90,7 @@ const UsuarioItem = ({ usuario }) => {
         {isEditDelete && (
           <button
             type="button"
-            onClick={() => handleDeleteUsuario(id)}
+            onClick={handleDeleteUsuario}
             className="flex justify-center items-center  px-4 py-1 w-2/3 rounded shadow border border-red-500 text-red-500 uppercase text-xs font-bold hover:bg-red-500 hover:text-white"
           >
             <svg

@@ -1,20 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import Layout from '../../components/Layout';
 import Spinner from '../../components/Spinner';
 import UsuarioItem from './UsuarioItem';
 import { OBTENER_USUARIOS } from '../../graphql/dslgql';
 
 const index = () => {
+  const [isPolling, setIsPolling] = useState(true);
   const router = useRouter();
 
   const {
     data,
     loading: obtenerUsuariosLoading,
     error: obtenerUsuariosError,
+    startPolling,
+    stopPolling,
   } = useQuery(OBTENER_USUARIOS);
+
+  useEffect(() => {
+    if (isPolling) {
+      startPolling(100);
+      setIsPolling(false);
+      setTimeout(() => {
+        stopPolling();
+      }, 160);
+    }
+  }, []);
 
   // console.log(obtenerUsuariosLoading);
   // console.log(obtenerUsuariosError);
@@ -23,16 +36,16 @@ const index = () => {
   // const rrr = JSON.stringify(obtenerUsuariosError);
   if (obtenerUsuariosLoading) return <Spinner loading={obtenerUsuariosLoading} />;
 
-  if (
-    obtenerUsuariosError &&
-    obtenerUsuariosError.graphQLErrors[0].extensions.code == 'UNAUTHENTICATED'
-  ) {
-    router.push('/login');
-    return <div></div>;
+  // if (
+  //   obtenerUsuariosError &&
+  //   obtenerUsuariosError.graphQLErrors[0].extensions.code == 'UNAUTHENTICATED'
+  // ) {
+  //   router.push('/login');
+  //   return <div></div>;
 
-    // const typeError = obtenerUsuariosError.graphQLErrors[0].extensions.code;
-    // if (typeError == 'UNAUTHENTICATED') router.push('/login');
-  }
+  //   // const typeError = obtenerUsuariosError.graphQLErrors[0].extensions.code;
+  //   // if (typeError == 'UNAUTHENTICATED') router.push('/login');
+  // }
   if (obtenerUsuariosError) return <h1>Problemas la llamada al origen de datos</h1>;
 
   return (

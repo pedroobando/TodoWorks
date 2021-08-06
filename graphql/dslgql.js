@@ -50,3 +50,9 @@ export const ACTUALIZAR_USUARIO = gql`
     }
   }
 `;
+
+export const ELIMINAR_USUARIO = gql`
+  mutation RemoveUserMutation {
+    removeUser
+  }
+`;

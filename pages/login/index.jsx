@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 
-import { AUTENTICAR_USUARIO } from '../../graphql/dslgql';
+import { AUTENTICAR_USUARIO, OBTENER_USUARIOS } from '../../graphql/dslgql';
 
 const index = () => {
   const router = useRouter();
@@ -46,11 +46,12 @@ const index = () => {
           },
         });
 
-        setTimeout(() => {
-          const { token } = data.authenticateUser;
-          localStorage.setItem('token', token);
-          router.push('/');
-        }, 1000);
+        const { token } = data.authenticateUser;
+        localStorage.setItem('token', token);
+        router.push('/');
+
+        // setTimeout(() => {
+        // }, 1000);
       } catch (error) {
         const { message } = error;
         console.log(message);

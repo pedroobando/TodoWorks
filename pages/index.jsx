@@ -3,8 +3,28 @@
 // import styles from '../styles/Home.module.css'
 
 import Layout from '../components/Layout';
+import { useRouter } from 'next/router';
+import { useQuery } from '@apollo/client';
+import { OBTENER_USUARIO } from '../graphql/dslgql';
 
 const Home = () => {
+  const router = useRouter();
+  const {
+    data,
+    loading: obtenerUsuarioLoading,
+    error: obtenerUsuarioError,
+  } = useQuery(OBTENER_USUARIO);
+
+  if (obtenerUsuarioLoading) return <></>;
+
+  if (
+    obtenerUsuarioError &&
+    obtenerUsuarioError.graphQLErrors[0].extensions.code == 'UNAUTHENTICATED'
+  ) {
+    router.push('/login');
+    return <div></div>;
+  }
+
   return (
     <Layout>
       <div className="mt-10">

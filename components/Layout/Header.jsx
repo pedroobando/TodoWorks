@@ -1,18 +1,38 @@
-import React from 'react';
 import { useRouter } from 'next/router';
+import { useQuery } from '@apollo/client';
+import { OBTENER_USUARIO } from '../../graphql/dslgql';
 
 const Header = () => {
   const router = useRouter();
+
+  // const {
+  //   data,
+  //   loading: obtenerUsuarioLoading,
+  //   error: obtenerUsuarioError,
+  // } = useQuery(OBTENER_USUARIO);
+
   const handleClose = () => {
     localStorage.removeItem('token');
     router.replace('/login');
   };
 
+  // if (obtenerUsuarioLoading) return <></>;
+
+  // if (
+  //   obtenerUsuarioError &&
+  //   obtenerUsuarioError.graphQLErrors[0].extensions.code == 'UNAUTHENTICATED'
+  // ) {
+  //   router.push('/login');
+  //   return <div></div>;
+  // }
+
+  // const { email, name } = data.getUser;
+
   return (
     <div className="flex bg-gray-50 px-2 py-2 justify-between items-baseline border-b">
-      <div className="flex space-x-3">
-        <p className="text-gray-400">Adress</p>
-        <p>0xc14D1bdD7A28b12fa3e88FE2bE9e193Bdfdlk8bb940A6</p>
+      <div className="flex space-x-3 items-baseline">
+        <p className="text-gray-600 font-semibold ">pepe</p>
+        <p className="text-gray-400 font-light text-sm">(email@got.com)</p>
       </div>
       <div className="flex space-x-4 text-gray-400 mr-3">
         <button
