@@ -1,38 +1,24 @@
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
-import { OBTENER_USUARIO } from '../../graphql/dslgql';
+
+import TodoContext from '../../context/TodoContext';
 
 const Header = () => {
   const router = useRouter();
-
-  // const {
-  //   data,
-  //   loading: obtenerUsuarioLoading,
-  //   error: obtenerUsuarioError,
-  // } = useQuery(OBTENER_USUARIO);
+  const { logoutUser, activeUser } = useContext(TodoContext);
 
   const handleClose = () => {
-    localStorage.removeItem('token');
+    logoutUser();
     router.replace('/login');
   };
 
-  // if (obtenerUsuarioLoading) return <></>;
-
-  // if (
-  //   obtenerUsuarioError &&
-  //   obtenerUsuarioError.graphQLErrors[0].extensions.code == 'UNAUTHENTICATED'
-  // ) {
-  //   router.push('/login');
-  //   return <div></div>;
-  // }
-
-  // const { email, name } = data.getUser;
+  const { email, name } = activeUser;
 
   return (
     <div className="flex bg-gray-50 px-2 py-2 justify-between items-baseline border-b">
       <div className="flex space-x-3 items-baseline">
-        <p className="text-gray-600 font-semibold ">pepe</p>
-        <p className="text-gray-400 font-light text-sm">(email@got.com)</p>
+        <p className="text-gray-600 font-semibold ">{name}</p>
+        <p className="text-gray-400 font-light text-sm">{email}</p>
       </div>
       <div className="flex space-x-4 text-gray-400 mr-3">
         <button

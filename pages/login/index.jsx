@@ -1,14 +1,20 @@
-import Swal from 'sweetalert2';
+import { useContext } from 'react';
+import TodoContext from '../../context/TodoContext';
+
+import { useRouter } from 'next/router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useMutation } from '@apollo/client';
-import { useRouter } from 'next/router';
 
-import { AUTENTICAR_USUARIO, OBTENER_USUARIOS } from '../../graphql/dslgql';
+import { useMutation } from '@apollo/client';
+import { AUTENTICAR_USUARIO } from '../../graphql/dslgql';
+
+import Swal from 'sweetalert2';
 
 const index = () => {
   const router = useRouter();
   const [authenticateUser] = useMutation(AUTENTICAR_USUARIO);
+
+  const { loginUser } = useContext(TodoContext);
 
   const handleRegister = () => {
     router.push('/login/register');
@@ -47,11 +53,8 @@ const index = () => {
         });
 
         const { token } = data.authenticateUser;
-        localStorage.setItem('token', token);
+        loginUser(token);
         router.push('/');
-
-        // setTimeout(() => {
-        // }, 1000);
       } catch (error) {
         const { message } = error;
         console.log(message);

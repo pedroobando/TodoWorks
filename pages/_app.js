@@ -1,15 +1,18 @@
-import { ApolloProvider } from '@apollo/client';
 import client from '../graphql/apollocfg';
+import { ApolloProvider } from '@apollo/client';
+import TodoState from '../context/TodoState';
 
 import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
 
-const MyApp = ({ Component, pageProps }) => {
+const AppTodo = ({ Component, pageProps }) => {
   return (
     <ApolloProvider client={client}>
-      <Component {...pageProps} />
+      <TodoState>
+        <Component {...pageProps} />
+      </TodoState>
     </ApolloProvider>
   );
 };
 
-export default MyApp;
+export default AppTodo;

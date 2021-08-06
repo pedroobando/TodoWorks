@@ -33,20 +33,14 @@ const index = () => {
   // console.log(obtenerUsuariosError);
   // console.log(data);
 
-  // const rrr = JSON.stringify(obtenerUsuariosError);
   if (obtenerUsuariosLoading) return <Spinner loading={obtenerUsuariosLoading} />;
 
-  // if (
-  //   obtenerUsuariosError &&
-  //   obtenerUsuariosError.graphQLErrors[0].extensions.code == 'UNAUTHENTICATED'
-  // ) {
-  //   router.push('/login');
-  //   return <div></div>;
-
-  //   // const typeError = obtenerUsuariosError.graphQLErrors[0].extensions.code;
-  //   // if (typeError == 'UNAUTHENTICATED') router.push('/login');
-  // }
-  if (obtenerUsuariosError) return <h1>Problemas la llamada al origen de datos</h1>;
+  if (obtenerUsuariosError)
+    return (
+      <Layout>
+        <h1>Problemas la llamada al origen de datos</h1>
+      </Layout>
+    );
 
   return (
     <Layout>
