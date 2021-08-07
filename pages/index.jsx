@@ -1,29 +1,18 @@
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
+import { useRouter } from 'next/router';
 import TodoContext from '../context/TodoContext';
 import Layout from '../components/Layout';
-import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
-import { OBTENER_USUARIO } from '../graphql/dslgql';
 
 const Home = () => {
   const router = useRouter();
   const { validUser } = useContext(TodoContext);
 
-  const {
-    data,
-    loading: obtenerUsuarioLoading,
-    error: obtenerUsuarioError,
-  } = useQuery(OBTENER_USUARIO);
-
-  if (obtenerUsuarioLoading) return <></>;
-
-  if (
-    obtenerUsuarioError &&
-    obtenerUsuarioError.graphQLErrors[0].extensions.code == 'UNAUTHENTICATED'
-  ) {
-    router.push('/login');
-    return <div></div>;
-  }
+  // useEffect(() => {
+  //   if (!validUser()) {
+  //     router.replace('/login');
+  //     return <div></div>;
+  //   }
+  // }, []);
 
   return (
     <Layout>

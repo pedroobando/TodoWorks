@@ -30,6 +30,7 @@ const TodoState = ({ children }) => {
         type: TYPE_AUTH.LOGIN,
         payload: { email, name },
       });
+      return true;
     } catch (error) {
       logoutUser();
       return false;
