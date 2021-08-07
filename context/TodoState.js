@@ -44,7 +44,7 @@ const TodoState = ({ children }) => {
 
     dispatch({
       type: TYPE_AUTH.LOGIN,
-      payload: { email, name },
+      payload: { email, name, token },
     });
   };
 

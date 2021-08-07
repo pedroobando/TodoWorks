@@ -7,7 +7,7 @@ import Spinner from '../../components/Spinner';
 import UsuarioItem from './UsuarioItem';
 import { OBTENER_USUARIOS } from '../../graphql/dslgql';
 
-const index = () => {
+const Index = () => {
   // const { validUser } = useContext(TodoContext);
   const [isPolling, setIsPolling] = useState(true);
   const router = useRouter();
@@ -32,7 +32,7 @@ const index = () => {
         stopPolling();
       }, 160);
     }
-  }, []);
+  }, [isPolling, startPolling, stopPolling]);
 
   // console.log(obtenerUsuariosLoading);
   // console.log(obtenerUsuariosError);
@@ -68,7 +68,14 @@ const index = () => {
           </thead>
           <tbody className="bg-white">
             {data.getUsers.map((user, idx) => (
-              <UsuarioItem usuario={user} key={idx} />
+              <UsuarioItem
+                id={user.id}
+                name={user.name}
+                email={user.email}
+                created={user.created}
+                owner={user.owner}
+                key={idx}
+              />
             ))}
           </tbody>
         </table>
@@ -77,4 +84,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

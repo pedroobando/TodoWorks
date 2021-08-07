@@ -24,7 +24,7 @@ const validationSchema = Yup.object({
     .oneOf([Yup.ref('password'), null], 'Las contraseñas deben coincidir'),
 });
 
-const register = ({ title = 'Registro Usuario', backHref = '/login' }) => {
+const Register = ({ title = 'Registro Usuario', backHref = '/login' }) => {
   const router = useRouter();
   const [newUser] = useMutation(NUEVO_USUARIO);
   const formik = useFormik({
@@ -213,4 +213,4 @@ const register = ({ title = 'Registro Usuario', backHref = '/login' }) => {
   );
 };
 
-export default register;
+export default Register;

@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import { ELIMINAR_USUARIO, OBTENER_USUARIOS } from '../../graphql/dslgql';
 
-const UsuarioItem = ({ usuario }) => {
-  const { id, name, email, created, owner } = usuario;
+const UsuarioItem = ({ id, name, email, created, owner }) => {
+  // const { name, email, created, owner } = usuario;
   const router = useRouter();
 
   const [removeUser, { loading: eliminarProductoLoading, error: eliminarProductoError }] =

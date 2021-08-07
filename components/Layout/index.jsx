@@ -3,9 +3,8 @@ import { useRouter } from 'next/router';
 import TodoContext from '../../context/TodoContext';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import Spinner from '../Spinner';
 
-const index = ({ children }) => {
+const Layout = ({ children }) => {
   const router = useRouter();
   const [notShow, setNotShow] = useState(false);
   const { validUser } = useContext(TodoContext);
@@ -16,7 +15,7 @@ const index = ({ children }) => {
     } else {
       setNotShow(true);
     }
-  }, []);
+  }, [router, validUser]);
 
   if (notShow) {
     return (
@@ -32,12 +31,8 @@ const index = ({ children }) => {
       </div>
     );
   } else {
-    return (
-      <div>
-        <Spinner />
-      </div>
-    );
+    return <div></div>;
   }
 };
 
-export default index;
+export default Layout;
