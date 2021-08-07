@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
     } else {
       setNotShow(true);
     }
-  }, [router, validUser]);
+  }, []);
 
   if (notShow) {
     return (

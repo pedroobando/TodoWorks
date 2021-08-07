@@ -8,13 +8,8 @@ import UsuarioItem from './UsuarioItem';
 import { OBTENER_USUARIOS } from '../../graphql/dslgql';
 
 const Index = () => {
-  // const { validUser } = useContext(TodoContext);
   const [isPolling, setIsPolling] = useState(true);
   const router = useRouter();
-
-  // if (!validUser()) {
-  //   router.replace('/login');
-  // }
 
   const {
     data,

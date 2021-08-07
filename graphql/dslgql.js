@@ -30,6 +30,21 @@ export const OBTENER_USUARIOS = gql`
   }
 `;
 
+export const OBTENER_PRODUCTOS = gql`
+  query Query {
+    getProducts {
+      id
+      name
+      amount
+      active
+      owner
+      user {
+        name
+      }
+    }
+  }
+`;
+
 export const NUEVO_USUARIO = gql`
   mutation newUser($input: UserInput!) {
     newUser(input: $input) {
@@ -37,6 +52,25 @@ export const NUEVO_USUARIO = gql`
       name
       email
       created
+    }
+  }
+`;
+
+export const NUEVO_PRODUCTO = gql`
+  mutation newProductMutation($newProductInput: ProductInput!) {
+    newProduct(input: $newProductInput) {
+      id
+      name
+      description
+      marks {
+        name
+      }
+      amount
+      active
+      owner
+      user {
+        name
+      }
     }
   }
 `;
