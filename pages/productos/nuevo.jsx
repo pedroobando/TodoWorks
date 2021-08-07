@@ -24,7 +24,7 @@ const validationSchema = Yup.object({
     .required('El monto del productos es requerido'),
 });
 
-const Nuevo = () => {
+const NuevoProducto = () => {
   const router = useRouter();
   const [newProduct] = useMutation(NUEVO_PRODUCTO, {
     update: (cache, { data: { newProduct } }) => {
@@ -200,4 +200,4 @@ const Nuevo = () => {
   );
 };
 
-export default Nuevo;
+export default NuevoProducto;
