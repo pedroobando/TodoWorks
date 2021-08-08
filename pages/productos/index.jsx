@@ -1,19 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import Layout from '../../components/Layout';
 import Spinner from '../../components/Spinner';
 import ProductCard from './ProductCard';
-import { OBTENER_PRODUCTOS } from '../../graphql/dslgql';
+import { OBTENER_PRODUCTOS, ELIMINAR_PRODUCTO } from '../../graphql/dslgql';
+import Swal from 'sweetalert2';
 
 const Index = () => {
   const router = useRouter();
+  const [outProductId, setOutProductId] = useState(null);
+
   const {
     data: dataProductos,
     loading: obtenerProductosLoading,
     error: obtenerProductosError,
   } = useQuery(OBTENER_PRODUCTOS);
+
+  const [
+    removeProduct,
+    { loading: eliminarProductoLoading, error: eliminarProductoError },
+  ] = useMutation(ELIMINAR_PRODUCTO, {
+    update(cache) {
+      const { getProducts } = cache.readQuery({
+        query: OBTENER_PRODUCTOS,
+      });
+      cache.writeQuery({
+        query: OBTENER_PRODUCTOS,
+        data: {
+          getProducts: getProducts.filter((userHere) => userHere.id !== outProductId),
+        },
+      });
+    },
+  });
 
   if (obtenerProductosLoading) return <Spinner />;
 
@@ -25,11 +45,45 @@ const Index = () => {
     );
 
   const editProduct = (id) => {
-    console.log(id);
+    // console.log(id);
+    router.push({
+      pathname: '/productos/editar/[id]',
+      query: { id },
+    });
   };
 
-  const removeProduct = (id) => {
-    console.log(id);
+  const removeProductId = (productId, productName) => {
+    // console.log(id);
+    Swal.fire({
+      title: `Deseas eliminar - ${productName}.?`,
+      text: 'Esta accion no podra revertirse..!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          setOutProductId(productId);
+          const { data } = await removeProduct({
+            variables: {
+              removeProductId: productId,
+            },
+          });
+          Swal.fire(
+            `${data.removeProduct}`,
+            `El producto ${productName} fue eliminado`,
+            'success'
+          );
+        } catch (error) {
+          // console.log(error);
+          const { message } = error;
+          Swal.fire('Error', `${message}`, 'error');
+        }
+      }
+    });
   };
 
   const { getProducts: listaDeProductos } = dataProductos;
@@ -67,7 +121,7 @@ const Index = () => {
             key={idx}
             product={product}
             handleEdit={() => editProduct(product.id)}
-            handleRemove={() => removeProduct(product.id)}
+            handleRemove={() => removeProductId(product.id, product.name)}
           />
         ))}
       </div>

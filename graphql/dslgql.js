@@ -56,6 +56,22 @@ export const NUEVO_USUARIO = gql`
   }
 `;
 
+export const ACTUALIZAR_USUARIO = gql`
+  mutation UpdateUserMutation($updateUserInput: UserUpdateInput!) {
+    updateUser(input: $updateUserInput) {
+      id
+      name
+      email
+    }
+  }
+`;
+
+export const ELIMINAR_USUARIO = gql`
+  mutation RemoveUserMutation {
+    removeUser
+  }
+`;
+
 export const NUEVO_PRODUCTO = gql`
   mutation newProductMutation($newProductInput: ProductInput!) {
     newProduct(input: $newProductInput) {
@@ -75,18 +91,8 @@ export const NUEVO_PRODUCTO = gql`
   }
 `;
 
-export const ACTUALIZAR_USUARIO = gql`
-  mutation UpdateUserMutation($updateUserInput: UserUpdateInput!) {
-    updateUser(input: $updateUserInput) {
-      id
-      name
-      email
-    }
-  }
-`;
-
-export const ELIMINAR_USUARIO = gql`
-  mutation RemoveUserMutation {
-    removeUser
+export const ELIMINAR_PRODUCTO = gql`
+  mutation RemoveProductMutation($removeProductId: ID!) {
+    removeProduct(id: $removeProductId)
   }
 `;
