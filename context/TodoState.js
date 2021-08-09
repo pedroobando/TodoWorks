@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { TYPE_AUTH } from './types';
+import { TYPE_AUTH, TYPE_PAGESTATE } from './types';
 import TodoContext from './TodoContext';
 import TodoReducer from './TodoReducer';
 import jwt from 'jsonwebtoken';
@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 const init = () => {
   // return JSON.parse(localStorage.getItem('user')) || { logged: false };
   return {
-    activePage: { page: '', params: {} },
+    backPageState: { name: '', params: {} },
     logged: false,
     activeUser: { email: '', name: '', userid: '' },
   };
@@ -15,12 +15,25 @@ const init = () => {
 
 const TodoState = ({ children }) => {
   const initialState = {
-    activeUser: {},
+    backPageState: {},
     logged: false,
     activePage: {},
   };
 
   const [state, dispatch] = useReducer(TodoReducer, initialState, init);
+
+  const setPageState = (setPage) => {
+    dispatch({
+      type: TYPE_PAGESTATE.SETPAGE,
+      payload: { ...setPage },
+    });
+  };
+
+  const clearPageState = () => {
+    dispatch({
+      type: TYPE_PAGESTATE.CLEAR,
+    });
+  };
 
   const validUser = () => {
     try {
@@ -101,9 +114,12 @@ const TodoState = ({ children }) => {
       value={{
         activeUser: state.activeUser,
         logged: state.logged,
+        backPageState: state.backPageState,
         loginUser,
         logoutUser,
         validUser,
+        setPageState,
+        clearPageState,
         // asignarCliente,
         // asignarProductos,
         // cantidadProductos,

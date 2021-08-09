@@ -1,4 +1,4 @@
-import { TYPE_AUTH } from './types';
+import { TYPE_AUTH, TYPE_PAGESTATE } from './types';
 
 const TodoReducer = (state, { type, payload }) => {
   switch (type) {
@@ -16,24 +16,17 @@ const TodoReducer = (state, { type, payload }) => {
         activeUser: {},
       };
 
-    // case SELECCIONAR_PRODUCTO:
-    //   return {
-    //     ...state,
-    //     productos: [...payload],
-    //   };
+    case TYPE_PAGESTATE.SETPAGE:
+      return {
+        ...state,
+        backPageState: payload,
+      };
 
-    // case CANTIDAD_PRODUCTOS:
-    //   return {
-    //     ...state,
-    //     productos: state.productos.map((producto) =>
-    //       producto.id === payload.id ? (producto = payload) : producto
-    //     ),
-    //   };
-
-    // case ACTUALIZAR_TOTAL:
-    //   return {
-    //     ...state,
-    //   };
+    case TYPE_PAGESTATE.CLEAR:
+      return {
+        ...state,
+        backPageState: { name: '', params: {} },
+      };
 
     default:
       return state;

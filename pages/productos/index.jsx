@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 
 const Index = () => {
   const router = useRouter();
-  const { activeUser } = useContext(TodoContext);
+  const { activeUser, setPageState } = useContext(TodoContext);
   const [outProductId, setOutProductId] = useState(null);
 
   const {
@@ -49,9 +49,11 @@ const Index = () => {
   const editProduct = (id, name) => {
     // router.replace('/productos/editar/[1]', undefined, { shallow: true });
     // console.log(id);
+    setPageState({ name: 'editar', params: { pid: id, name } });
+    const styleParam = name.toString().toLowerCase().replace(/\s/g, '-');
     router.push({
       pathname: '/productos/editar/[name]',
-      query: { name, 'pin': id },
+      query: { name: styleParam },
     });
   };
 
