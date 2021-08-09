@@ -15,6 +15,7 @@
     "apollo-link-context": "^1.0.20",
     "autoprefixer": "^10.3.1",
     "bcryptjs": "^2.4.3",
+    "cookie": "^0.4.1",
     "formik": "^2.2.9",
     "graphql": "^15.5.1",
     "jsonwebtoken": "^8.5.1",

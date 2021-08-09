@@ -18,6 +18,33 @@ const EditProduct = () => {
   return (
     <div>
       id:{pid} - name:{name}
+      <button
+        className="mb-2 border border-red-400 font-bold text-base rounded px-4 py-1 m-4 uppercase"
+        onClick={() => {
+          fetch('/api/login', {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: 'ABCDEFG' }),
+          });
+        }}
+      >
+        Login
+      </button>
+      <button
+        className="mb-2 border-2 border-blue-400 font-bold text-base rounded px-4 py-1 m-4 uppercase hover:bg-blue-100"
+        onClick={() => {
+          fetch('/api/logout', {
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+        }}
+      >
+        Logout
+      </button>
     </div>
   );
 };
