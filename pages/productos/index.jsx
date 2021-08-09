@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useQuery, useMutation } from '@apollo/client';
 import Layout from '../../components/Layout';
 import Spinner from '../../components/Spinner';
 import ProductCard from './ProductCard';
+import TodoContext from '../../context/TodoContext';
 import { OBTENER_PRODUCTOS, ELIMINAR_PRODUCTO } from '../../graphql/dslgql';
 import Swal from 'sweetalert2';
 
 const Index = () => {
   const router = useRouter();
+  const { activeUser } = useContext(TodoContext);
   const [outProductId, setOutProductId] = useState(null);
 
   const {
@@ -119,6 +121,7 @@ const Index = () => {
         {listaDeProductos.map((product, idx) => (
           <ProductCard
             key={idx}
+            userActive={activeUser}
             product={product}
             handleEdit={() => editProduct(product.id)}
             handleRemove={() => removeProductId(product.id, product.name)}

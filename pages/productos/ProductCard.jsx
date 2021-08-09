@@ -4,14 +4,18 @@ const myLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
 };
 
-const ProductCard = ({ product, handleEdit, handleRemove }) => {
+const ProductCard = ({
+  product,
+  userActive = { email: '' },
+  handleEdit,
+  handleRemove,
+}) => {
   const {
     id,
     name,
-    owner,
-    user: { name: nameUser },
+    user: { name: nameUser, email: emailUser },
   } = product;
-  const activeOwner = owner === 'true' ? true : false;
+  const activeOwner = emailUser === userActive.email ? true : false;
 
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg">

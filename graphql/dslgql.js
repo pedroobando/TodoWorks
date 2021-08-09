@@ -35,13 +35,22 @@ export const OBTENER_PRODUCTOS = gql`
     getProducts {
       id
       name
+      description
       amount
-      active
-      owner
       user {
+        id
         name
+        email
       }
+      active
+      hashtags
     }
+  }
+`;
+
+export const OBTENER_HASHTAGSPRODUCTO = gql`
+  query Query {
+    getProductHashTag
   }
 `;
 
@@ -73,20 +82,19 @@ export const ELIMINAR_USUARIO = gql`
 `;
 
 export const NUEVO_PRODUCTO = gql`
-  mutation newProductMutation($newProductInput: ProductInput!) {
+  mutation NewProductMutation($newProductInput: ProductInput!) {
     newProduct(input: $newProductInput) {
       id
       name
       description
-      marks {
-        name
-      }
       amount
-      active
-      owner
       user {
+        id
         name
+        email
       }
+      active
+      hashtags
     }
   }
 `;

@@ -1,20 +1,24 @@
+import { useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useFormik } from 'formik';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 
-import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
-import { NUEVO_PRODUCTO, OBTENER_PRODUCTOS } from '../../graphql/dslgql';
+import {
+  NUEVO_PRODUCTO,
+  OBTENER_HASHTAGSPRODUCTO,
+  OBTENER_PRODUCTOS,
+} from '../../graphql/dslgql';
 
 const initialValues = {
   name: '',
   description: '',
   amount: 0,
-  marks: [],
   active: true,
 };
 
@@ -23,11 +27,32 @@ const validationSchema = Yup.object({
   description: Yup.string().required('La descripcion del producto es requerida'),
   amount: Yup.number()
     .min(0, 'Monto minimo del producto es 0')
+    .max(999999999, 'Monto maximo es 999.999.999')
     .required('El monto del productos es requerido'),
 });
 
 const NuevoProducto = () => {
   const router = useRouter();
+  const [selHashTags, setSelHashTags] = useState([]);
+  const [listHashTags, setListHashTags] = useState([]);
+
+  const {
+    data: dataHashTags,
+    loading: obtenerHashTagsLoading,
+    error: obtenerHashTagsError,
+  } = useQuery(OBTENER_HASHTAGSPRODUCTO);
+
+  useEffect(() => {
+    if (!obtenerHashTagsLoading) {
+      const _listHashTags = dataHashTags.getProductHashTag.map((tag) => ({
+        value: tag,
+        label: tag,
+      }));
+
+      setListHashTags([..._listHashTags]);
+    }
+  }, [obtenerHashTagsLoading]);
+
   const [newProduct] = useMutation(NUEVO_PRODUCTO, {
     update: (cache, { data: { newProduct } }) => {
       const { getProducts } = cache.readQuery({
@@ -39,11 +64,23 @@ const NuevoProducto = () => {
       });
     },
   });
+
+  const handleChange = (newValue, actionMeta) => {
+    setSelHashTags([...newValue]);
+    console.log(selHashTags, actionMeta.action);
+    // console.group('Value Changed');
+    // console.log(newValue);
+    // console.log(`action: ${actionMeta.action}`);
+    // console.groupEnd();
+  };
+
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
       const { name, description, amount } = values;
+      const hashtags = selHashTags.map((tag) => tag.value.toString().trim());
+      console.log(hashtags);
       try {
         const { data } = await newProduct({
           variables: {
@@ -51,6 +88,7 @@ const NuevoProducto = () => {
               name,
               description,
               amount,
+              hashtags,
             },
           },
         });
@@ -71,20 +109,6 @@ const NuevoProducto = () => {
           <h1 className="font-bold text-center text-2xl mb-5 uppercase text-gray-600">
             Nuevo Producto
           </h1>
-
-          <Select
-            className="mt-2"
-            options={obtenerProductos}
-            isMulti={true}
-            onChange={(option) => handleSelectProducto(option)}
-            getOptionValue={(productos) => productos.id}
-            getOptionLabel={(productos) =>
-              `${productos.nombre}   |   ${productos.existencia} Disponibles`
-            }
-            placeholder="Selecciones productos"
-            noOptionsMessage={() => 'No hay resultados'}
-          />
-
           <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
             <form className="px-5 py-7" onSubmit={formik.handleSubmit}>
               <div className="mb-6">
@@ -116,10 +140,11 @@ const NuevoProducto = () => {
                 >
                   Descripcion
                 </label>
-                <input
+                <textarea
                   id="description"
                   type="text"
                   className="shadow appearance-none border border-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:shadow-outline"
+                  rows="3"
                   value={formik.values.description}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -151,6 +176,27 @@ const NuevoProducto = () => {
                     <p className="text-sm">{formik.errors.amount}</p>
                   </div>
                 )}
+              </div>
+
+              <div className="mb-6">
+                <label
+                  htmlFor="hashtag"
+                  className="font-semibold text-sm text-gray-600 pb-1 block"
+                >
+                  Caracteristicas
+                </label>
+                <CreatableSelect
+                  id="hashtag"
+                  isClearable
+                  isMulti
+                  options={listHashTags}
+                  onChange={handleChange}
+                  // value={formik.values.hashtags}
+                  // onChange={formik.handleChange}
+                  // onBlur={formik.handleBlur}
+                  placeholder="Caracteristicas"
+                  noOptionsMessage={() => 'No hay resultados'}
+                />
               </div>
 
               <button
