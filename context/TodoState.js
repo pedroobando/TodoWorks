@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 const init = () => {
   // return JSON.parse(localStorage.getItem('user')) || { logged: false };
   return {
+    activePage: { page: '', params: {} },
     logged: false,
     activeUser: { email: '', name: '', userid: '' },
   };
@@ -16,6 +17,7 @@ const TodoState = ({ children }) => {
   const initialState = {
     activeUser: {},
     logged: false,
+    activePage: {},
   };
 
   const [state, dispatch] = useReducer(TodoReducer, initialState, init);

@@ -46,11 +46,12 @@ const Index = () => {
       </Layout>
     );
 
-  const editProduct = (id) => {
+  const editProduct = (id, name) => {
+    // router.replace('/productos/editar/[1]', undefined, { shallow: true });
     // console.log(id);
     router.push({
-      pathname: '/productos/editar/[id]',
-      query: { id },
+      pathname: '/productos/editar/[name]',
+      query: { name, 'pin': id },
     });
   };
 
@@ -123,7 +124,7 @@ const Index = () => {
             key={idx}
             userActive={activeUser}
             product={product}
-            handleEdit={() => editProduct(product.id)}
+            handleEdit={() => editProduct(product.id, product.name)}
             handleRemove={() => removeProductId(product.id, product.name)}
           />
         ))}
