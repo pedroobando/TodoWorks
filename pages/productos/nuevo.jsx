@@ -6,6 +6,8 @@ import { useMutation, gql } from '@apollo/client';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 
+import Select from 'react-select';
+
 import { NUEVO_PRODUCTO, OBTENER_PRODUCTOS } from '../../graphql/dslgql';
 
 const initialValues = {
@@ -69,6 +71,20 @@ const NuevoProducto = () => {
           <h1 className="font-bold text-center text-2xl mb-5 uppercase text-gray-600">
             Nuevo Producto
           </h1>
+
+          <Select
+            className="mt-2"
+            options={obtenerProductos}
+            isMulti={true}
+            onChange={(option) => handleSelectProducto(option)}
+            getOptionValue={(productos) => productos.id}
+            getOptionLabel={(productos) =>
+              `${productos.nombre}   |   ${productos.existencia} Disponibles`
+            }
+            placeholder="Selecciones productos"
+            noOptionsMessage={() => 'No hay resultados'}
+          />
+
           <div className="bg-white shadow w-full rounded-lg divide-y divide-gray-200">
             <form className="px-5 py-7" onSubmit={formik.handleSubmit}>
               <div className="mb-6">
