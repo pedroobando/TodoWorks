@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const AUTENTICAR_USUARIO = gql`
-  mutation Mutation($authenticateUserInput: AuthenticateInput!) {
+  mutation authenticateUser($authenticateUserInput: AuthenticateInput!) {
     authenticateUser(input: $authenticateUserInput) {
       token
     }
@@ -31,7 +31,7 @@ export const OBTENER_USUARIOS = gql`
 `;
 
 export const OBTENER_PRODUCTOS = gql`
-  query Query {
+  query getProducts {
     getProducts {
       id
       name
@@ -49,7 +49,7 @@ export const OBTENER_PRODUCTOS = gql`
 `;
 
 export const OBTENER_HASHTAGSPRODUCTO = gql`
-  query Query {
+  query getProductHashTag {
     getProductHashTag
   }
 `;

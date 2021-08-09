@@ -13,7 +13,10 @@ const ProductCard = ({
   const {
     id,
     name,
+    description,
     user: { name: nameUser, email: emailUser },
+    hashtags,
+    active,
   } = product;
   const activeOwner = emailUser === userActive.email ? true : false;
 
@@ -71,22 +74,17 @@ const ProductCard = ({
           )}
         </div>
 
-        <p className="text-gray-700 text-base">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat at eos nobis
-          quisquam itaque incidunt repudiandae sed veniam. Officiis, laborum soluta quidem
-          neque voluptatibus molestiae provident dicta vitae nihil perferendis.
-        </p>
+        <p className="text-gray-700 text-base">{description}</p>
       </div>
       <div className="px-6 pt-4 pb-2">
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #photography
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #travel
-        </span>
-        <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-          #winter
-        </span>
+        {hashtags.map((tag, idx) => (
+          <span
+            key={idx}
+            className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
+          >
+            {`#${tag}`}
+          </span>
+        ))}
       </div>
     </div>
   );
