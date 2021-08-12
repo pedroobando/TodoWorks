@@ -3,9 +3,9 @@ import SidebarMenu from './SidebarMenu';
 
 const menuPrincipal = [
   { pathname: '/', name: 'Dasboard' },
+  { pathname: '/productos/propios', name: 'Mis Productos' },
+  { pathname: '/productos', name: 'Todo los Productos' },
   { pathname: '/tareas', name: 'Tareas' },
-  { pathname: '/productos', name: 'Productos' },
-  { pathname: '/trabajos', name: 'Trabajos' },
 ];
 
 const menuSetting = [
