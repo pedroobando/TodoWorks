@@ -72,6 +72,42 @@ export const OBTENER_HASHTAGSPRODUCTO = gql`
   }
 `;
 
+export const OBTENER_PRODUCTOS_USUARIO = gql`
+  query getProductsbyUser {
+    getProductsbyUser {
+      id
+      name
+      description
+      amount
+      user {
+        id
+        name
+        email
+      }
+      active
+      hashtags
+    }
+  }
+`;
+
+export const OBTENER_PRODUCTOS_HASHTAG = gql`
+  query getProductHashTag($hashtag: [String!]!) {
+    getProductHashTag(hashtag: $hashtag) {
+      id
+      name
+      description
+      amount
+      user {
+        id
+        name
+        email
+      }
+      active
+      hashtags
+    }
+  }
+`;
+
 export const NUEVO_USUARIO = gql`
   mutation newUser($input: UserInput!) {
     newUser(input: $input) {
