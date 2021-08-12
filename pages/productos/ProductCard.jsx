@@ -4,6 +4,14 @@ const myLoader = ({ src, width, quality }) => {
   return `${src}?w=${width}&q=${quality || 75}`;
 };
 
+const maxDescription = (_descripcion, max) => {
+  let retDescription = _descripcion || '';
+  if (retDescription.toString().length >= max) {
+    retDescription = _descripcion.toString().slice(0, max) + '...';
+  }
+  return retDescription;
+};
+
 const ProductCard = ({
   product,
   userActive = { email: '' },
@@ -27,8 +35,9 @@ const ProductCard = ({
         className="w-full"
         src="/mountain.jpg"
         layout="responsive"
-        height="80"
-        width="100"
+        height="70"
+        width="90"
+        quality="70"
         alt={name}
       />
       <div className="px-6 py-4">
@@ -74,7 +83,7 @@ const ProductCard = ({
           )}
         </div>
 
-        <p className="text-gray-700 text-base">{description}</p>
+        <p className="text-gray-700 text-justify">{maxDescription(description, 120)}</p>
       </div>
       <div className="px-6 pt-4 pb-2">
         {hashtags.map((tag, idx) => (

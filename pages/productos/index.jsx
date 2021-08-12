@@ -55,7 +55,6 @@ const Index = () => {
   };
 
   const removeProductId = (productId, productName) => {
-    // console.log(id);
     Swal.fire({
       title: `Deseas eliminar - ${productName}.?`,
       text: 'Esta accion no podra revertirse..!',
