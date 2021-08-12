@@ -48,7 +48,6 @@ const NuevoProducto = () => {
         value: tag,
         label: tag,
       }));
-
       setListHashTags([..._listHashTags]);
     }
   }, [obtenerHashTagsLoading]);
@@ -67,7 +66,7 @@ const NuevoProducto = () => {
 
   const handleChange = (newValue, actionMeta) => {
     setSelHashTags([...newValue]);
-    console.log(selHashTags, actionMeta.action);
+    // console.log(selHashTags, actionMeta.action);
     // console.group('Value Changed');
     // console.log(newValue);
     // console.log(`action: ${actionMeta.action}`);
@@ -80,7 +79,6 @@ const NuevoProducto = () => {
     onSubmit: async (values) => {
       const { name, description, amount } = values;
       const hashtags = selHashTags.map((tag) => tag.value.toString().trim());
-      console.log(hashtags);
       try {
         const { data } = await newProduct({
           variables: {

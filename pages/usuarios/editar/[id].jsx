@@ -1,20 +1,14 @@
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import Layout from '../../../components/Layout';
 import Spinner from '../../../components/Spinner';
 import { useQuery, useMutation } from '@apollo/client';
-import {
-  ACTUALIZAR_USUARIO,
-  OBTENER_USUARIO,
-  OBTENER_USUARIOS,
-} from '../../../graphql/dslgql';
+import { ACTUALIZAR_USUARIO, OBTENER_USUARIO } from '../../../graphql/dslgql';
 
 const EditarUsuario = () => {
   const router = useRouter();
-
   const {
     query: { id },
   } = router;
@@ -26,19 +20,6 @@ const EditarUsuario = () => {
   } = useQuery(OBTENER_USUARIO, { variables: { id } });
 
   const [updateUser] = useMutation(ACTUALIZAR_USUARIO);
-
-  // {
-  //   update(cache) {
-  //     const { getUsers } = cache.readQuery({
-  //       query: OBTENER_USUARIOS,
-  //     });
-  //     cache.writeQuery({
-  //       query: OBTENER_USUARIOS,
-  //       data: {
-  //         getUsers: getUsers.filter((userHere) => userHere.id !== id),
-  //       },
-  //     });
-  //   },
 
   const schemaValidacion = Yup.object({
     name: Yup.string().required('El nombre del usuario es requerido'),
@@ -73,7 +54,6 @@ const EditarUsuario = () => {
   // console.log(obtenerUsuarioError);
   // console.log(data);
 
-  // const rrr = JSON.stringify(obtenerUsuariosError);
   if (obtenerUsuarioLoading)
     return (
       <Layout>

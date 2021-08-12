@@ -30,6 +30,24 @@ export const OBTENER_USUARIOS = gql`
   }
 `;
 
+export const OBTENER_PRODUCTO = gql`
+  query getProduct($getProductId: ID!) {
+    getProduct(id: $getProductId) {
+      id
+      name
+      description
+      amount
+      user {
+        id
+        name
+        email
+      }
+      active
+      hashtags
+    }
+  }
+`;
+
 export const OBTENER_PRODUCTOS = gql`
   query getProducts {
     getProducts {
@@ -102,5 +120,23 @@ export const NUEVO_PRODUCTO = gql`
 export const ELIMINAR_PRODUCTO = gql`
   mutation RemoveProductMutation($removeProductId: ID!) {
     removeProduct(id: $removeProductId)
+  }
+`;
+
+export const ACTUALIZAR_PRODUCTO = gql`
+  mutation updateProduct($updateProductId: ID!, $updateProductInput: ProductInput!) {
+    updateProduct(id: $updateProductId, input: $updateProductInput) {
+      id
+      name
+      description
+      amount
+      user {
+        id
+        name
+        email
+      }
+      active
+      hashtags
+    }
   }
 `;
