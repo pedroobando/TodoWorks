@@ -90,20 +90,21 @@ export const OBTENER_PRODUCTOS_USUARIO = gql`
   }
 `;
 
-export const OBTENER_PRODUCTOS_HASHTAG = gql`
-  query getProductHashTag($hashtag: [String!]!) {
-    getProductHashTag(hashtag: $hashtag) {
+export const OBTENER_TAREAS = gql`
+  query getTodos {
+    getTodos {
       id
-      name
+      product {
+        name
+      }
       description
       amount
-      user {
-        id
+      userTo {
         name
         email
       }
-      active
-      hashtags
+      complete
+      created
     }
   }
 `;
@@ -173,6 +174,25 @@ export const ACTUALIZAR_PRODUCTO = gql`
       }
       active
       hashtags
+    }
+  }
+`;
+
+export const NUEVA_TAREA = gql`
+  mutation newTodo($newTodoInput: TodoInput!) {
+    newTodo(input: $newTodoInput) {
+      id
+      product {
+        name
+      }
+      description
+      amount
+      userTo {
+        name
+        email
+      }
+      complete
+      created
     }
   }
 `;

@@ -14,12 +14,12 @@ const SidebarMenu = ({ menuTitle, menuList }) => {
               key={idx}
               className={
                 router.pathname === itemMenu.pathname
-                  ? 'bg-gray-300 rounded my-2'
+                  ? 'bg-blue-100 rounded my-2'
                   : 'my-2'
               }
             >
               <Link href={itemMenu.pathname}>
-                <a className="flex p-3 text-gray-700 space-x-4 rounded hover:bg-gray-200 hover:text-blue-600 cursor-pointer">
+                <a className="flex p-3 text-gray-600 space-x-4 rounded font-medium cursor-pointer hover:bg-gray-200 hover:text-blue-600">
                   {itemMenu.name}
                 </a>
               </Link>

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 import { useQuery, useMutation } from '@apollo/client';
 import Layout from '../../components/Layout';
 import Spinner from '../../components/Spinner';
@@ -105,75 +106,81 @@ const Index = () => {
   const { getProducts: listaDeProductos } = dataProductos;
 
   return (
-    <Layout>
-      <title className="flex justify-between items-baseline">
-        <Link href="/productos/nuevo">
-          <a className="py-2 px-5 text-blue-800 rounded text-sm border hover:bg-gray-200  uppercase font-bold w-full lg:w-auto text-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 inline-block mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-              />
-            </svg>
-            <span className="align-bottom">Nuevo Producto</span>
-          </a>
-        </Link>
+    <>
+      <Head>
+        <title>Productos | TodoWork</title>
+      </Head>
 
-        <div className="border rounded-md flex">
-          <input
-            className="w-full rounded-md py-2 px-4"
-            type="search"
-            id="hashtag"
-            placeholder="Search..."
-            value={hashTag}
-            onChange={handleInputHansTag}
-          />
-          <button
-            onClick={handleOnClickHashTagSearch}
-            className="bg-white w-auto p-2 rounded-r-md flex justify-end items-center text-blue-500 hover:text-blue-400 hover:bg-blue-50"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 inline-block mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+      <Layout>
+        <title className="flex justify-between items-baseline">
+          <Link href="/productos/nuevo">
+            <a className="py-2 px-5 text-blue-800 rounded text-sm border hover:bg-gray-200  uppercase font-bold w-full lg:w-auto text-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 inline-block mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              <span className="align-bottom">Nuevo Producto</span>
+            </a>
+          </Link>
+
+          <div className="border rounded-md flex">
+            <input
+              className="w-full rounded-md py-2 px-4"
+              type="search"
+              id="hashtag"
+              placeholder="Search..."
+              value={hashTag}
+              onChange={handleInputHansTag}
+            />
+            <button
+              onClick={handleOnClickHashTagSearch}
+              className="bg-white w-auto p-2 rounded-r-md flex justify-end items-center text-blue-500 hover:text-blue-400 hover:bg-blue-50"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 inline-block mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <h1 className="text-2xl text-gray-600 font-semibold uppercase mr-4">
+            Productos del Inventario
+          </h1>
+        </title>
+
+        <div className="py-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
+          {listaDeProductos.map((product, idx) => (
+            <ProductCard
+              key={idx}
+              userActive={activeUser}
+              product={product}
+              handleEdit={() => editProduct(product.id, product.name)}
+              handleRemove={() => removeProductId(product.id, product.name)}
+            />
+          ))}
         </div>
-
-        <h1 className="text-2xl text-gray-600 font-semibold uppercase mr-4">
-          Productos del Inventario
-        </h1>
-      </title>
-
-      <div className="py-6 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
-        {listaDeProductos.map((product, idx) => (
-          <ProductCard
-            key={idx}
-            userActive={activeUser}
-            product={product}
-            handleEdit={() => editProduct(product.id, product.name)}
-            handleRemove={() => removeProductId(product.id, product.name)}
-          />
-        ))}
-      </div>
-    </Layout>
+      </Layout>
+    </>
   );
 };
 
