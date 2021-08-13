@@ -13,12 +13,14 @@ const Index = () => {
   const router = useRouter();
   const { activeUser } = useContext(TodoContext);
   const [outProductId, setOutProductId] = useState(null);
+  const [hashTag, setHashTag] = useState('');
+  const [listHashTags, setListHashTags] = useState([]);
 
   const {
     data: dataProductos,
     loading: obtenerProductosLoading,
     error: obtenerProductosError,
-  } = useQuery(OBTENER_PRODUCTOS);
+  } = useQuery(OBTENER_PRODUCTOS, { variables: { hashtag: listHashTags } });
 
   const [
     removeProduct,
@@ -45,6 +47,19 @@ const Index = () => {
         <h1>Problemas la llamada al origen de datos</h1>
       </Layout>
     );
+
+  const handleInputHansTag = ({ target }) => {
+    setHashTag(target.value);
+  };
+
+  const handleOnClickHashTagSearch = () => {
+    const listHash = hashTag
+      .trim()
+      .split(' ')
+      .filter((item) => item.trim() !== '');
+
+    setListHashTags(listHash);
+  };
 
   const editProduct = (id, name) => {
     const styleParam = name.toString().toLowerCase().replace(/\s/g, '-');
@@ -111,6 +126,37 @@ const Index = () => {
             <span className="align-bottom">Nuevo Producto</span>
           </a>
         </Link>
+
+        <div className="border rounded-md flex">
+          <input
+            className="w-full rounded-md py-2 px-4"
+            type="search"
+            id="hashtag"
+            placeholder="Search..."
+            value={hashTag}
+            onChange={handleInputHansTag}
+          />
+          <button
+            onClick={handleOnClickHashTagSearch}
+            className="bg-white w-auto p-2 rounded-r-md flex justify-end items-center text-blue-500 hover:text-blue-400 hover:bg-blue-50"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 inline-block mr-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
+        </div>
+
         <h1 className="text-2xl text-gray-600 font-semibold uppercase mr-4">
           Productos del Inventario
         </h1>

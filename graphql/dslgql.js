@@ -49,8 +49,8 @@ export const OBTENER_PRODUCTO = gql`
 `;
 
 export const OBTENER_PRODUCTOS = gql`
-  query getProducts {
-    getProducts {
+  query getProducts($hashtag: [String!]) {
+    getProducts(hashtag: $hashtag) {
       id
       name
       description
