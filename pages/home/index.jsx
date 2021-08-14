@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useMutation, useQuery } from '@apollo/client';
@@ -11,6 +11,7 @@ import TodoDetail from './TodoDetail';
 
 const Index = () => {
   const router = useRouter();
+  const [todoCompleteId, setTodoCompleteId] = useState(null);
   const { activeUser } = useContext(TodoContext);
   const {
     data: dataTareas,
@@ -21,7 +22,9 @@ const Index = () => {
   const [updateTodoComplete] = useMutation(ACTUALIZAR_TAREA_COMPLETE);
 
   const handleCloseTodo = async (todoId, { target }) => {
+    // console.log(todoId, target.checked);
     try {
+      setTodoCompleteId(todoId);
       const { data } = await updateTodoComplete({
         variables: {
           upTodoCompleteId: todoId,

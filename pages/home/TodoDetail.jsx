@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const TodoDetail = ({ todo, handleCloseTodo, userActive }) => {
   const {
@@ -11,7 +11,7 @@ const TodoDetail = ({ todo, handleCloseTodo, userActive }) => {
     complete,
   } = todo;
 
-  // const completado = complete == 'true' ? true : false;
+  console.log(todoId);
   const todoDate = new Date(parseInt(todo.created));
   return (
     <tr>
@@ -47,6 +47,7 @@ const TodoDetail = ({ todo, handleCloseTodo, userActive }) => {
             type="checkbox"
             name="closeTodo"
             id="closeTodo"
+            checked={complete}
             onChange={(e) => handleCloseTodo(todoId, e)}
           />
         )}
