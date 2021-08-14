@@ -208,3 +208,25 @@ export const ELIMINAR_TAREA = gql`
     removeTodo(id: $removeTodoId)
   }
 `;
+
+export const ACTUALIZAR_TAREA_COMPLETE = gql`
+  mutation updateTodoComplete($upTodoCompleteId: ID!, $upTodoComplete: Boolean!) {
+    updateTodoComplete(id: $upTodoCompleteId, complete: $upTodoComplete) {
+      id
+      product {
+        name
+      }
+      description
+      amount
+      userTo {
+        name
+        email
+      }
+      complete
+      created
+      user {
+        email
+      }
+    }
+  }
+`;

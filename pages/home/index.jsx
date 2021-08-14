@@ -1,66 +1,37 @@
-import React, { useContext, useState } from 'react';
-import Link from 'next/link';
+import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { useQuery, useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import Layout from '../../components/Layout';
 import Spinner from '../../components/Spinner';
 import TodoContext from '../../context/TodoContext';
-import { ELIMINAR_TAREA, OBTENER_TAREAS } from '../../graphql/dslgql';
+import { ACTUALIZAR_TAREA_COMPLETE, OBTENER_TAREAS } from '../../graphql/dslgql';
 import Swal from 'sweetalert2';
 import TodoDetail from './TodoDetail';
 
 const Index = () => {
   const router = useRouter();
-  const [outTodoId, setOutTodoId] = useState(null);
   const { activeUser } = useContext(TodoContext);
-
   const {
     data: dataTareas,
     loading: obtenerTareasLoading,
     error: obtenerTareasError,
   } = useQuery(OBTENER_TAREAS);
 
-  const [removeTodo] = useMutation(ELIMINAR_TAREA, {
-    update(cache) {
-      const { getTodos } = cache.readQuery({
-        query: OBTENER_TAREAS,
-      });
-      cache.writeQuery({
-        query: OBTENER_TAREAS,
-        data: {
-          getTodos: getTodos.filter((ItemHere) => ItemHere.id !== outTodoId),
+  const [updateTodoComplete] = useMutation(ACTUALIZAR_TAREA_COMPLETE);
+
+  const handleCloseTodo = async (todoId, { target }) => {
+    try {
+      const { data } = await updateTodoComplete({
+        variables: {
+          upTodoCompleteId: todoId,
+          upTodoComplete: target.checked,
         },
       });
-    },
-  });
-
-  const handleDeleteTarea = (todoId, todoName) => {
-    Swal.fire({
-      title: `Deseas eliminar - ${todoName}.?`,
-      text: 'Esta accion no podra revertirse..!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'Cancelar',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          setOutTodoId(todoId);
-          const { data } = await removeTodo({
-            variables: {
-              removeTodoId: todoId,
-            },
-          });
-          Swal.fire(`${data.removeTodo}`, `Tarea ${todoName} fue eliminado`, 'success');
-        } catch (error) {
-          const { message } = error;
-          Swal.fire('Error', `${message}`, 'error');
-        }
-      }
-    });
+    } catch (error) {
+      const { message } = error;
+      Swal.fire('Error', message, 'error');
+    }
   };
 
   if (obtenerTareasLoading) return <Spinner />;
@@ -120,12 +91,19 @@ const Index = () => {
                       <th
                         scope="col"
                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      ></th>
+                      >
+                        Terminar
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {listaDeTareas.map((todo, idx) => (
-                      <TodoDetail todo={todo} key={idx} />
+                      <TodoDetail
+                        todo={todo}
+                        key={idx}
+                        handleCloseTodo={handleCloseTodo}
+                        userActive={activeUser.email}
+                      />
                     ))}
                   </tbody>
                 </table>

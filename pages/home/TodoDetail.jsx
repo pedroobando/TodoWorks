@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TodoDetail = ({ todo }) => {
+const TodoDetail = ({ todo, handleCloseTodo, userActive }) => {
   const {
     id: todoId,
     userTo: { name: userName },
@@ -11,7 +11,7 @@ const TodoDetail = ({ todo }) => {
     complete,
   } = todo;
 
-  const completado = complete == 'true' ? true : false;
+  // const completado = complete == 'true' ? true : false;
   const todoDate = new Date(parseInt(todo.created));
   return (
     <tr>
@@ -30,18 +30,27 @@ const TodoDetail = ({ todo }) => {
       <td className="px-6 py-4 whitespace-nowrap">
         <span
           className={
-            completado
+            complete
               ? 'bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full '
               : 'bg-red-100 text-red-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full '
           }
         >
-          {completado ? 'TERMINADO' : 'PENDIENTE'}
+          {complete ? 'TERMINADO' : 'PENDIENTE'}
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {todoDate.toDateString()}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap"></td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {userActive === userActiveEmail && (
+          <input
+            type="checkbox"
+            name="closeTodo"
+            id="closeTodo"
+            onChange={(e) => handleCloseTodo(todoId, e)}
+          />
+        )}
+      </td>
     </tr>
   );
 };
