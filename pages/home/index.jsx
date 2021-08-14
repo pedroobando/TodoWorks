@@ -77,31 +77,13 @@ const Index = () => {
   return (
     <>
       <Head>
-        <title>Tareas | TodoWork</title>
+        <title>Dashboard | TodoWork</title>
       </Head>
       <Layout>
-        <title className="flex justify-between items-baseline">
-          <Link href="/tareas/nueva">
-            <a className="py-2 px-5 text-blue-800 rounded text-sm border hover:bg-gray-200  uppercase font-bold w-full lg:w-auto text-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 inline-block mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              <span className="align-bottom">Nueva Tarea</span>
-            </a>
-          </Link>
-
-          <h1 className="text-2xl text-gray-600 font-semibold uppercase mr-4">Tareas</h1>
+        <title className="flex justify-end items-baseline">
+          <h1 className="text-2xl text-gray-600 font-semibold uppercase mr-4">
+            Mis Tareas
+          </h1>
         </title>
 
         <div className="flex flex-col mt-4">
@@ -143,12 +125,7 @@ const Index = () => {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {listaDeTareas.map((todo, idx) => (
-                      <TodoDetail
-                        todo={todo}
-                        key={idx}
-                        handleDeleteTarea={handleDeleteTarea}
-                        activeUser={activeUser.email}
-                      />
+                      <TodoDetail todo={todo} key={idx} />
                     ))}
                   </tbody>
                 </table>

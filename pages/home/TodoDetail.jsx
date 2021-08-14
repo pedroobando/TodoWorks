@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TodoDetail = ({ todo, handleDeleteTarea, activeUser = '' }) => {
+const TodoDetail = ({ todo }) => {
   const {
     id: todoId,
     userTo: { name: userName },
@@ -41,16 +41,7 @@ const TodoDetail = ({ todo, handleDeleteTarea, activeUser = '' }) => {
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {todoDate.toDateString()}
       </td>
-      <td className="px-6 py-4 whitespace-nowrap">
-        {!completado && activeUser === userActiveEmail && (
-          <button
-            onClick={() => handleDeleteTarea(todoId, description)}
-            className="transition duration-300 transform border border-red-700 text-red-800 inline-flex text-xs px-2 leading-5 font-semibold rounded-full uppercase hover:bg-red-700 hover:text-white hover:-translate-y-1 hover:scale-110"
-          >
-            Eliminar
-          </button>
-        )}
-      </td>
+      <td className="px-6 py-4 whitespace-nowrap"></td>
     </tr>
   );
 };

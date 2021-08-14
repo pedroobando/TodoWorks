@@ -105,6 +105,9 @@ export const OBTENER_TAREAS = gql`
       }
       complete
       created
+      user {
+        email
+      }
     }
   }
 `;
@@ -193,6 +196,15 @@ export const NUEVA_TAREA = gql`
       }
       complete
       created
+      user {
+        email
+      }
     }
+  }
+`;
+
+export const ELIMINAR_TAREA = gql`
+  mutation removeTodo($removeTodoId: ID!) {
+    removeTodo(id: $removeTodoId)
   }
 `;
