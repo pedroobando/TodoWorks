@@ -6,8 +6,10 @@ const TodoDetail = ({ todo }) => {
     userTo: { email: userEmail },
     description,
     product: { name: productName },
+    complete,
   } = todo;
 
+  const completado = complete == 'true' ? true : false;
   const todoDate = new Date(parseInt(todo.created));
   return (
     <tr>
@@ -24,8 +26,14 @@ const TodoDetail = ({ todo }) => {
         <div className="text-sm text-gray-500">{productName}</div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-          {todo.complete ? 'TERMINADO' : 'PENDIENTE'}
+        <span
+          className={
+            completado
+              ? 'bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full '
+              : 'bg-red-100 text-red-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full '
+          }
+        >
+          {completado ? 'TERMINADO' : 'PENDIENTE'}
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
+import Spinner from '../../components/Spinner';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
@@ -7,7 +8,16 @@ import { useFormik } from 'formik';
 import { useMutation, useQuery } from '@apollo/client';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
-import { NUEVA_TAREA, OBTENER_TAREAS, OBTENER_PRODUCTOS } from '../../graphql/dslgql';
+import Select from 'react-select';
+
+import TodoContext from '../../context/TodoContext';
+
+import {
+  NUEVA_TAREA,
+  OBTENER_TAREAS,
+  OBTENER_PRODUCTOS,
+  OBTENER_USUARIOS,
+} from '../../graphql/dslgql';
 
 const initialValues = {
   product: '',
@@ -18,23 +28,35 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object({
-  product: Yup.string().required('El producto asociado a la tarea es requerido'),
   description: Yup.string().required('La descripcion de la tarea es requerida'),
-  userTo: Yup.string().required('Indique el usuario que realizara la tarea'),
   amount: Yup.number()
     .min(0, 'Monto minimo del producto es 0')
     .max(999999999, 'Monto maximo es 999.999.999')
     .required('El monto del productos es requerido'),
 });
 
+const selectInitialState = {
+  product: '',
+  userTo: '',
+};
+
 const NuevaTarea = () => {
   const router = useRouter();
+  const { activeUser } = useContext(TodoContext);
+  const [selectState, setSelectState] = useState(selectInitialState);
+  const [listUsuarios, setListUsuarios] = useState([]);
 
   const {
     data: dataProductos,
-    loading: obtenerProductos,
+    loading: obtenerProductLoading,
     error: obtenerProductosError,
   } = useQuery(OBTENER_PRODUCTOS);
+
+  const {
+    data: dataUsuarios,
+    loading: obtenerUsuariosLoading,
+    error: obtenerUsuariosError,
+  } = useQuery(OBTENER_USUARIOS);
 
   const [newTodo] = useMutation(NUEVA_TAREA, {
     update: (cache, { data: { newTodo } }) => {
@@ -48,13 +70,20 @@ const NuevaTarea = () => {
     },
   });
 
+  useEffect(() => {
+    if (!obtenerUsuariosLoading) {
+      setListUsuarios(
+        dataUsuarios.getUsers.filter((user) => user.email !== activeUser.email)
+      );
+    }
+  }, [obtenerUsuariosLoading]);
+
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: async (values) => {
-      const { product, description, amount, userTo } = values;
-
-      const hashtags = selHashTags.map((tag) => tag.value.toString().trim());
+      const { description, amount } = values;
+      const { product, userTo } = selectState;
       try {
         const { data } = await newTodo({
           variables: {
@@ -66,15 +95,41 @@ const NuevaTarea = () => {
             },
           },
         });
-        Swal.fire('Tarea creada', `Se ingreso correctamente`, 'success');
+
+        const {
+          newTodo: { description: nombreTarea },
+        } = data;
+        Swal.fire(
+          'Tarea creada',
+          `${nombreTarea}, se registro correctamente `,
+          'success'
+        );
         router.push('/tareas');
       } catch (error) {
-        // console.log(error);
         const { message } = error;
         Swal.fire('Error', `${message}`, 'error');
       }
     },
   });
+
+  if (obtenerProductLoading || obtenerUsuariosLoading) return <Spinner />;
+
+  if (obtenerProductosError || obtenerUsuariosError)
+    return (
+      <Layout>
+        <h1>Problemas con la conexion</h1>
+      </Layout>
+    );
+
+  const handleSelectProducto = ({ id }) => {
+    setSelectState((lstate) => ({ ...lstate, product: id }));
+  };
+
+  const handleSelectUsuario = ({ id }) => {
+    setSelectState((lstate) => ({ ...lstate, userTo: id }));
+  };
+
+  const { getProducts: listaDeProductos } = dataProductos;
 
   return (
     <>
@@ -113,25 +168,28 @@ const NuevaTarea = () => {
 
                 <div className="mb-6">
                   <label
-                    htmlFor="description"
+                    htmlFor="selectProduct"
                     className="font-semibold text-sm text-gray-600 pb-1 block"
                   >
-                    Descripcion
+                    Producto
                   </label>
-                  <textarea
-                    id="description"
-                    type="text"
-                    className="shadow appearance-none border border-transparent rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:shadow-outline"
-                    rows="3"
-                    value={formik.values.description}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                  <Select
+                    id="selectProducto"
+                    options={listaDeProductos}
+                    // value={formik.values.product}
+                    // onChange={formik.handleChange}
+                    onChange={(option) => handleSelectProducto(option)}
+                    getOptionValue={(productos) => productos.id}
+                    getOptionLabel={(productos) => productos.name}
+                    placeholder="Selecciones productos"
+                    noOptionsMessage={() => 'No hay resultados'}
                   />
-                  {formik.touched.description && formik.errors.description && (
+
+                  {/* {formik.touched.product && formik.errors.product && (
                     <div className="mb-2 mt-1 bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-2">
-                      <p className="text-sm">{formik.errors.description}</p>
+                      <p className="text-sm">{formik.errors.product}</p>
                     </div>
-                  )}
+                  )} */}
                 </div>
 
                 <div className="mb-6">
@@ -156,6 +214,24 @@ const NuevaTarea = () => {
                   )}
                 </div>
 
+                <div className="mb-6">
+                  <label
+                    htmlFor="selectUser"
+                    className="font-semibold text-sm text-gray-600 pb-1 block"
+                  >
+                    Asignado a:
+                  </label>
+                  <Select
+                    id="selectUser"
+                    options={listUsuarios}
+                    onChange={(option) => handleSelectUsuario(option)}
+                    getOptionValue={(usuario) => usuario.id}
+                    getOptionLabel={(usuario) => usuario.name}
+                    placeholder="Seleccione el usuario"
+                    noOptionsMessage={() => 'No hay resultados'}
+                  />
+                </div>
+
                 <button
                   type="submit"
                   className="transition duration-200 bg-blue-500 hover:bg-blue-600 hover:shadows-md focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block"
@@ -177,19 +253,12 @@ const NuevaTarea = () => {
                     />
                   </svg>
                 </button>
-
-                <button
-                  className=" w-full mt-4 text-blue-500 border-blue-500 border hover:bg-blue-100 text-white py-2.5 rounded-lg text-sm font-semibold text-center inline-block"
-                  onClick={formik.resetForm}
-                >
-                  <span className="inline-block mr-2 uppercase">Limpiar datos</span>
-                </button>
               </form>
 
               <div className="py-5">
                 <div className="grid grid-cols-2 gap-1">
                   <div className="text-center sm:text-left whitespace-nowrap">
-                    <Link href="/productos">
+                    <Link href="/tareas">
                       <a className="transition duration-200 mx-5 px-4 py-2 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 hover:shadow-md focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
