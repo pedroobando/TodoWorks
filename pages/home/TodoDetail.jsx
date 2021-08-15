@@ -11,7 +11,6 @@ const TodoDetail = ({ todo, handleCloseTodo, userActive }) => {
     complete,
   } = todo;
 
-  console.log(todoId);
   const todoDate = new Date(parseInt(todo.created));
   return (
     <tr>
@@ -43,13 +42,14 @@ const TodoDetail = ({ todo, handleCloseTodo, userActive }) => {
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         {userActive === userActiveEmail && (
-          <input
-            type="checkbox"
-            name="closeTodo"
-            id="closeTodo"
-            checked={complete}
-            onChange={(e) => handleCloseTodo(todoId, e)}
-          />
+          <button onClick={() => handleCloseTodo(todoId, !complete)}>PRESS</button>
+          // <input
+          //   type="checkbox"
+          //   name="closeTodo"
+          //   id="closeTodo"
+          //   checked={complete}
+          //   onChange={}
+          // />
         )}
       </td>
     </tr>

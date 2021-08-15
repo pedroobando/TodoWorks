@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { useMutation, useQuery } from '@apollo/client';
@@ -10,27 +10,40 @@ import Swal from 'sweetalert2';
 import TodoDetail from './TodoDetail';
 
 const Index = () => {
-  const router = useRouter();
-  const [todoCompleteId, setTodoCompleteId] = useState(null);
+  // const router = useRouter();
+  // const [todoCompleteId, setTodoCompleteId] = useState(null);
+  const [isPolling, setIsPolling] = useState(true);
   const { activeUser } = useContext(TodoContext);
   const {
     data: dataTareas,
     loading: obtenerTareasLoading,
     error: obtenerTareasError,
+    startPolling,
+    stopPolling,
   } = useQuery(OBTENER_TAREAS);
+
+  useEffect(() => {
+    if (isPolling) {
+      startPolling(100);
+      setIsPolling(false);
+      setTimeout(() => {
+        stopPolling();
+      }, 160);
+    }
+  }, [isPolling, startPolling, stopPolling]);
 
   const [updateTodoComplete] = useMutation(ACTUALIZAR_TAREA_COMPLETE);
 
-  const handleCloseTodo = async (todoId, { target }) => {
-    // console.log(todoId, target.checked);
+  const handleCloseTodo = async (todoId, target) => {
     try {
-      setTodoCompleteId(todoId);
+      // setTodoCompleteId(todoId);
       const { data } = await updateTodoComplete({
         variables: {
           upTodoCompleteId: todoId,
-          upTodoComplete: target.checked,
+          upTodoComplete: target,
         },
       });
+      setIsPolling(true);
     } catch (error) {
       const { message } = error;
       Swal.fire('Error', message, 'error');
@@ -65,7 +78,7 @@ const Index = () => {
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
               <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                 <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+                  <thead className="bg-blue-100">
                     <tr>
                       <th
                         scope="col"

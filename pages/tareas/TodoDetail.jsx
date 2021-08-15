@@ -11,7 +11,7 @@ const TodoDetail = ({ todo, handleDeleteTarea, activeUser = '' }) => {
     complete,
   } = todo;
 
-  const completado = complete == 'true' ? true : false;
+  // const completado = complete == 'true' ? true : false;
   const todoDate = new Date(parseInt(todo.created));
   return (
     <tr>
@@ -30,19 +30,19 @@ const TodoDetail = ({ todo, handleDeleteTarea, activeUser = '' }) => {
       <td className="px-6 py-4 whitespace-nowrap">
         <span
           className={
-            completado
+            complete
               ? 'bg-green-100 text-green-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full '
               : 'bg-red-100 text-red-800 px-2 inline-flex text-xs leading-5 font-semibold rounded-full '
           }
         >
-          {completado ? 'TERMINADO' : 'PENDIENTE'}
+          {complete ? 'TERMINADO' : 'PENDIENTE'}
         </span>
       </td>
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         {todoDate.toDateString()}
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {!completado && activeUser === userActiveEmail && (
+        {!complete && activeUser === userActiveEmail && (
           <button
             onClick={() => handleDeleteTarea(todoId, description)}
             className="transition duration-300 transform border border-red-700 text-red-800 inline-flex text-xs px-2 leading-5 font-semibold rounded-full uppercase hover:bg-red-700 hover:text-white hover:-translate-y-1 hover:scale-110"
