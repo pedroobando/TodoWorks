@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useContext, useEffect, useState } from 'react';
 import Layout from '../../components/Layout';
 import Spinner from '../../components/Spinner';

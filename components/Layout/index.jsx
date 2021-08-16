@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 import TodoContext from '../../context/TodoContext';

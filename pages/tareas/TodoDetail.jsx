@@ -1,18 +1,29 @@
 import React from 'react';
 
-const TodoDetail = ({ todo, handleDeleteTarea, activeUser = '' }) => {
-  const {
-    id: todoId,
-    userTo: { name: userName },
-    userTo: { email: userEmail },
-    user: { email: userActiveEmail },
-    description,
-    product: { name: productName },
-    complete,
-  } = todo;
+const TodoDetail = ({
+  todoId,
+  userName,
+  userEmail,
+  userActiveEmail,
+  description,
+  productName,
+  complete,
+  created,
+  handleDeleteTarea,
+  activeUser = '',
+}) => {
+  // const {
+  //   id: todoId,
+  //   userTo: { name: userName },
+  //   userTo: { email: userEmail },
+  //   user: { email: userActiveEmail },
+  //   description,
+  //   product: { name: productName },
+  //   complete,
+  // } = todo;
 
   // const completado = complete == 'true' ? true : false;
-  const todoDate = new Date(parseInt(todo.created));
+  const todoDate = new Date(parseInt(created));
   return (
     <tr>
       <td className="px-6 py-4 whitespace-nowrap">

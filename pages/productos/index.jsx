@@ -172,6 +172,11 @@ const Index = () => {
           {listaDeProductos.map((product, idx) => (
             <ProductCard
               key={idx}
+              productName={product.name}
+              productDescription={product.description}
+              nameUser={product.user.name}
+              emailUser={product.user.email}
+              hashtags={product.hashtags}
               userActive={activeUser}
               product={product}
               handleEdit={() => editProduct(product.id, product.name)}

@@ -144,8 +144,15 @@ const Index = () => {
                   <tbody className="bg-white divide-y divide-gray-200">
                     {listaDeTareas.map((todo, idx) => (
                       <TodoDetail
-                        todo={todo}
                         key={idx}
+                        todoId={todo.id}
+                        userName={todo.userTo.name}
+                        userEmail={todo.userTo.email}
+                        userActiveEmail={todo.user.email}
+                        description={todo.description}
+                        productName={todo.product.name}
+                        complete={todo.complete}
+                        created={todo.created}
                         handleDeleteTarea={handleDeleteTarea}
                         activeUser={activeUser.email}
                       />

@@ -1,17 +1,24 @@
 import React, { useState } from 'react';
 
-const TodoDetail = ({ todo, handleCloseTodo, userActive }) => {
-  const {
-    id: todoId,
-    userTo: { name: userName },
-    userTo: { email: userEmail },
-    user: { email: userActiveEmail },
-    description,
-    product: { name: productName },
-    complete,
-  } = todo;
+const TodoDetail = ({
+  todoId,
+  userName,
+  userEmail,
+  userActiveEmail,
+  description,
+  productName,
+  complete,
+  created,
+  handleCloseTodo,
+  userActive,
+}) => {
+  // const {
+  //   // userTo: { name: userName },
 
-  const todoDate = new Date(parseInt(todo.created));
+  //   // id: todoId,
+  // } = todo;
+
+  const todoDate = new Date(parseInt(created));
   return (
     <tr>
       <td className="px-6 py-4 whitespace-nowrap">

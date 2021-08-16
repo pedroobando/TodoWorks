@@ -13,19 +13,23 @@ const maxDescription = (_descripcion, max) => {
 };
 
 const ProductCard = ({
-  product,
+  productName,
+  productDescription,
+  nameUser,
+  emailUser,
+  hashtags = [],
   userActive = { email: '' },
   handleEdit,
   handleRemove,
 }) => {
-  const {
-    id,
-    name,
-    description,
-    user: { name: nameUser, email: emailUser },
-    hashtags,
-    active,
-  } = product;
+  // const {
+  //   id,
+  //   name: productName,
+  //   description: productDescription,
+  //   user: { name: nameUser, email: emailUser },
+  //   hashtags,
+  //   active,
+  // } = product;
   const activeOwner = emailUser === userActive.email ? true : false;
 
   return (
@@ -38,10 +42,10 @@ const ProductCard = ({
         height="70"
         width="90"
         quality="70"
-        alt={name}
+        alt={productName}
       />
       <div className="px-6 py-4">
-        <div className="font-bold text-xl">{name}</div>
+        <div className="font-bold text-xl">{productName}</div>
         <div className="flex justify-between items-baseline mb-4">
           <span className="bg-yellow-100 rounded-xl px-6 py-1 font-bold text-md text-gray-600 ">
             {nameUser}
@@ -83,7 +87,9 @@ const ProductCard = ({
           )}
         </div>
 
-        <p className="text-gray-700 text-justify">{maxDescription(description, 120)}</p>
+        <p className="text-gray-700 text-justify">
+          {maxDescription(productDescription, 120)}
+        </p>
       </div>
       <div className="px-6 pt-4 pb-2">
         {hashtags.map((tag, idx) => (
