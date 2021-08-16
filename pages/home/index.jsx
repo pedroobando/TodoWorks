@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 import Head from 'next/head';
 import { useMutation, useQuery } from '@apollo/client';
 import Layout from '../../components/Layout';
@@ -10,40 +9,23 @@ import Swal from 'sweetalert2';
 import TodoDetail from './TodoDetail';
 
 const Index = () => {
-  // const router = useRouter();
-  // const [todoCompleteId, setTodoCompleteId] = useState(null);
-  const [isPolling, setIsPolling] = useState(true);
   const { activeUser } = useContext(TodoContext);
   const {
     data: dataTareas,
     loading: obtenerTareasLoading,
     error: obtenerTareasError,
-    startPolling,
-    stopPolling,
   } = useQuery(OBTENER_TAREAS);
-
-  useEffect(() => {
-    if (isPolling) {
-      startPolling(100);
-      setIsPolling(false);
-      setTimeout(() => {
-        stopPolling();
-      }, 160);
-    }
-  }, [isPolling, startPolling, stopPolling]);
 
   const [updateTodoComplete] = useMutation(ACTUALIZAR_TAREA_COMPLETE);
 
   const handleCloseTodo = async (todoId, target) => {
     try {
-      // setTodoCompleteId(todoId);
       const { data } = await updateTodoComplete({
         variables: {
           upTodoCompleteId: todoId,
           upTodoComplete: target,
         },
       });
-      setIsPolling(true);
     } catch (error) {
       const { message } = error;
       Swal.fire('Error', message, 'error');
