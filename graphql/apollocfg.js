@@ -4,8 +4,7 @@ import fetch from 'node-fetch';
 import { setContext } from 'apollo-link-context';
 
 const httpLink = createHttpLink({
-  // uri: 'http://localhost:4000/graphql',
-  uri: process.env.api_gql2,
+  uri: process.env.cnn_gqlp,
   fetch,
 });
 
