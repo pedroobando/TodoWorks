@@ -3,6 +3,7 @@ import { TYPE_AUTH, TYPE_PAGESTATE } from './types';
 import TodoContext from './TodoContext';
 import TodoReducer from './TodoReducer';
 import jwt from 'jsonwebtoken';
+import fetch from 'node-fetch';
 
 const init = () => {
   // return JSON.parse(localStorage.getItem('user')) || { logged: false };
@@ -54,6 +55,11 @@ const TodoState = ({ children }) => {
 
   const loginUser = (token) => {
     localStorage.setItem('token', token);
+    fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
 
     const { email, name } = jwt.decode(token);
 
@@ -65,6 +71,10 @@ const TodoState = ({ children }) => {
 
   const logoutUser = () => {
     localStorage.removeItem('token');
+    fetch('/api/logout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
     dispatch({
       type: TYPE_AUTH.LOGOUT,
     });
